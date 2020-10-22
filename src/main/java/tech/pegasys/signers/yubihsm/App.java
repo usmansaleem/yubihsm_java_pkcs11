@@ -13,11 +13,7 @@ import iaik.pkcs.pkcs11.objects.Data;
 import iaik.pkcs.pkcs11.objects.PKCS11Object;
 import org.apache.tuweni.bytes.Bytes;
 
-import java.nio.file.Path;
-import java.util.logging.Logger;
-
 public class App {
-    private static final Logger LOG = Logger.getLogger(App.class.getName());
     public String getGreeting() {
         return "Hello world.";
     }
@@ -36,7 +32,7 @@ public class App {
             defaultInitializeArgs.setReserved(args[1]);
             pkcs11Module.initialize(defaultInitializeArgs);
             final Info info = pkcs11Module.getInfo();
-            LOG.info("Module Info " + info);
+            System.out.println("Module Info " + info);
 
             // get slot list
             final Slot[] slotList = pkcs11Module.getSlotList(Module.SlotRequirement.TOKEN_PRESENT);
