@@ -11,50 +11,28 @@ import iaik.pkcs.pkcs11.objects.PKCS11Object;
 import java.util.Objects;
 
 /**
- * Extends Data to provide support for ID in place of ObjectId for findInit
+ * Extends Data to provide support for ID (for findObjectInit)
  */
 public class YubiData extends Data {
 
     /**
      * The ID (CKA_ID) attribute of this data object (DER-encoded).
      */
-    // CHECKSTYLE:SKIP
     protected ByteArrayAttribute id;
 
     public YubiData() {
         super();
     }
 
-    protected YubiData(Session session, long objectHandle) throws TokenException {
-        super(session, objectHandle);
-    }
-
-    protected static void putAttributesInTable(YubiData object) {
-        Util.requireNonNull("object", object);
-        object.attributeTable.put(Attribute.ID, object.id);
-    }
-
     @Override
     protected void allocateAttributes() {
         super.allocateAttributes();
         id = new ByteArrayAttribute(Attribute.ID);
-        putAttributesInTable(this);
+        attributeTable.put(Attribute.ID, id);
     }
 
-    public static PKCS11Object getInstance(Session session, long objectHandle)
-            throws TokenException {
-        return new YubiData(session, objectHandle);
-    }
-
-    @Override
-    public ByteArrayAttribute getObjectID() {
+    public ByteArrayAttribute getId() {
         return id;
-    }
-
-    @Override
-    public void readAttributes(Session session) throws TokenException {
-        super.readAttributes(session);
-        PKCS11Object.getAttributeValue(session, objectHandle, id);
     }
 
     @Override

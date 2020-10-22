@@ -31,7 +31,6 @@ public class App {
         }
 
         try {
-            System.err.println(Path.of("."));
             Module pkcs11Module = Module.getInstance(args[0]);
             DefaultInitializeArgs defaultInitializeArgs = new DefaultInitializeArgs();
             defaultInitializeArgs.setReserved(args[1]);
@@ -45,7 +44,7 @@ public class App {
                 System.out.println("Slot: " + slot);
             }
 
-            // use the first slot
+            // use the first slot (Yubi returns 1 slot anyways)
             final Token token = slotList[0].getToken();
 
             // open session
@@ -63,7 +62,7 @@ public class App {
 
             //Fetch data (findInit, find, findFinal)
             YubiData dataObjectTemplate = new YubiData();
-            dataObjectTemplate.getObjectID().setByteArrayValue(Bytes.ofUnsignedShort(20).toArrayUnsafe());
+            dataObjectTemplate.getId().setByteArrayValue(Bytes.ofUnsignedShort(20).toArrayUnsafe());
 
             session.findObjectsInit(dataObjectTemplate);
             PKCS11Object[] objects = session.findObjects(1);
